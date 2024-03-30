@@ -1,11 +1,14 @@
-import 'package:logger/src/core/log_level.dart';
+import 'package:logger/logger.dart';
 
 abstract class Logger {
   static final _loggers = <Logger>[];
+  static final _enrichers = <Enricher>[];
 
   static void addInstance(Logger logger) => _loggers.add(logger);
-
   static void removeInstance(Logger logger) => _loggers.remove(logger);
+
+  static void addEnricher(Enricher enricher) => _enrichers.add(enricher);
+  static void removeEnricher(Enricher enricher) => _enrichers.remove(enricher);
 
   static void logDebug(
     String message, {
@@ -83,8 +86,27 @@ abstract class Logger {
     List<Object?>? args,
     Object? error,
     StackTrace? stackTrace,
+    Map<String, String>? enrichersData,
   }) =>
       '[${level.name}] $message';
+
+  Future<Map<String, String>?> enrich() async {
+    final List<Future<Map<String, String>>> enrichingTasks = [];
+
+    for (var enricher in _enrichers) {
+      enrichingTasks.add(enricher.enrich());
+    }
+
+    final results = await Future.wait<Map<String, String>>(enrichingTasks);
+
+    final enrichersData = <String, String>{};
+
+    for (var result in results) {
+     enrichersData.addAll(result);
+    }
+
+    return enrichersData.isEmpty ? null : enrichersData;
+  }
 
   static Future<void> _log({
     required LogLevel level,

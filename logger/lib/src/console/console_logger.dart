@@ -48,6 +48,7 @@ class ConsoleLogger extends Logger {
     List<Object?>? args,
     Object? error,
     StackTrace? stackTrace,
+    Map<String, String>? enrichersData,
   }) {
     var formattedMassege = super.formatMessage(level, message);
 
