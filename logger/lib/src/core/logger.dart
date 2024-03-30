@@ -1,10 +1,10 @@
-import 'package:logger/src/log_level.dart';
+import 'package:logger/src/core/log_level.dart';
 
 abstract class Logger {
   static final _loggers = <Logger>[];
 
   static void addInstance(Logger logger) => _loggers.add(logger);
-  
+
   static void removeInstance(Logger logger) => _loggers.remove(logger);
 
   static void logDebug(
