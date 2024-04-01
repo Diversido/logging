@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:logger/src/core/log_level.dart';
-import 'package:logger/src/core/logger.dart';
+import 'package:logger/src/core/logger_instance_interface.dart';
 import 'package:logger/src/utils/log_formatter.dart';
 
-class ConsoleLogger extends Logger {
+class ConsoleLogger extends ILogger {
   final bool printException;
 
   /// Use 'printException = false' to prevent error and stackTrace print to console.
@@ -50,10 +50,12 @@ class ConsoleLogger extends Logger {
     StackTrace? stackTrace,
     Map<String, String>? enrichersData,
   }) {
+    final logFormatter = LogFormatter();
+
     var formattedMassege = super.formatMessage(level, message);
 
     if (args != null) {
-      formattedMassege = LogFormatter.applyArgsToLogTemplate(
+      formattedMassege = logFormatter.applyArgsToLogTemplate(
         formattedMassege,
         args,
       );

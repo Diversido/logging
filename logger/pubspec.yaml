@@ -1,6 +1,7 @@
 name: logger
 description: A Flutter package that provides an interface of Logger and a Console logger implementation.
 version: 0.0.1
+publish_to: none
 
 environment:
   sdk: '>=3.1.4 <4.0.0'

@@ -1,14 +1,22 @@
 import 'package:logger/logger.dart';
 
 abstract class Logger {
-  static final _loggers = <Logger>[];
-  static final _enrichers = <Enricher>[];
+  static final _loggers = <ILogger>[];
 
-  static void addInstance(Logger logger) => _loggers.add(logger);
-  static void removeInstance(Logger logger) => _loggers.remove(logger);
+  static void addInstance(ILogger logger) => _loggers.add(logger);
+  static void removeInstance(ILogger logger) => _loggers.remove(logger);
 
-  static void addEnricher(Enricher enricher) => _enrichers.add(enricher);
-  static void removeEnricher(Enricher enricher) => _enrichers.remove(enricher);
+  static void addEnrichers(List<Enricher> enrichers) {
+    _loggers.whereType<EnrichableLogger>().map(
+          (eLogger) => eLogger.addEnrichers(enrichers),
+        );
+  }
+
+  static void removeEnrichers(List<Enricher> enrichers) {
+    _loggers.whereType<EnrichableLogger>().map(
+          (eLogger) => eLogger.removeEnrichers(enrichers),
+        );
+  }
 
   static void logDebug(
     String message, {
@@ -68,44 +76,6 @@ abstract class Logger {
       error: error,
       stackTrace: stackTrace,
     );
-  }
-
-  LogLevel minLogLevel = LogLevel.debug;
-
-  Future<void> log(
-    LogLevel level,
-    String message, [
-    Object? error,
-    StackTrace? stackTrace,
-    List<Object?>? args,
-  ]);
-
-  String formatMessage(
-    LogLevel level,
-    String message, {
-    List<Object?>? args,
-    Object? error,
-    StackTrace? stackTrace,
-    Map<String, String>? enrichersData,
-  }) =>
-      '[${level.name}] $message';
-
-  Future<Map<String, String>?> enrich() async {
-    final List<Future<Map<String, String>>> enrichingTasks = [];
-
-    for (var enricher in _enrichers) {
-      enrichingTasks.add(enricher.enrich());
-    }
-
-    final results = await Future.wait<Map<String, String>>(enrichingTasks);
-
-    final enrichersData = <String, String>{};
-
-    for (var result in results) {
-     enrichersData.addAll(result);
-    }
-
-    return enrichersData.isEmpty ? null : enrichersData;
   }
 
   static Future<void> _log({
