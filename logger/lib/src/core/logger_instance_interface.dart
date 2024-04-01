@@ -3,7 +3,7 @@ import 'package:logger/logger.dart';
 abstract class ILogger {
   LogLevel minLogLevel = LogLevel.debug;
 
-  Future<void> log(
+  void log(
     LogLevel level,
     String message, [
     Object? error,
@@ -11,12 +11,12 @@ abstract class ILogger {
     List<Object?>? args,
   ]);
 
-  String formatMessage(
+  Future<String> formatMessage(
     LogLevel level,
     String message, {
     List<Object?>? args,
     Object? error,
     StackTrace? stackTrace,
-  }) =>
+  }) async =>
       '[${level.name}] $message';
 }

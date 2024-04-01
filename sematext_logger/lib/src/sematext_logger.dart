@@ -32,14 +32,13 @@ class SematextLogger extends EnrichableLogger {
   }
 
   @override
-  String formatMessage(
+  Future<String> formatMessage(
     LogLevel level,
     String message, {
     List<Object?>? args,
     Object? error,
     StackTrace? stackTrace,
-    Map<String, String>? enrichersData,
-  }) {
+  }) async {
     final logFormatter = SematextLogFormatter();
 
     final formattedLog = {
@@ -65,6 +64,7 @@ class SematextLogger extends EnrichableLogger {
     }
 
     // Enriching with enrichers data
+    final enrichersData = await getEnrichersData();
     if (enrichersData?.isNotEmpty == true) {
       formattedLog.addAll(enrichersData!);
     }
@@ -73,28 +73,41 @@ class SematextLogger extends EnrichableLogger {
   }
 
   @override
-  Future<void> log(
+  void log(
+    LogLevel level,
+    String message, [
+    Object? error,
+    StackTrace? stackTrace,
+    List<Object?>? args,
+  ]) {
+    _logAsync(
+      level,
+      message,
+      error,
+      stackTrace,
+      args,
+    );
+  }
+
+  Future<void> _logAsync(
     LogLevel level,
     String message, [
     Object? error,
     StackTrace? stackTrace,
     List<Object?>? args,
   ]) async {
-    final enrichersData = await getEnrichersData();
-
-    final formattedLog = formatMessage(
+    final formattedLog = await formatMessage(
       level,
       message,
       args: args,
       error: error,
       stackTrace: stackTrace,
-      enrichersData: enrichersData,
     );
 
     final logData = (jsonDecode(formattedLog) as Map<String, dynamic>).map(
       (key, value) => MapEntry(key, value?.toString() ?? ''),
     );
 
-    return _logsene.log(logData);
+    _logsene.log(logData);
   }
 }
