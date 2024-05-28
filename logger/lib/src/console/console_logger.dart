@@ -78,4 +78,11 @@ class ConsoleLogger extends ILogger {
 
     return formattedMessage;
   }
+
+  @override
+  void changeLogLevel(LogLevel newLogLevel) {
+    log(LogLevel.debug, "Changing log level to ${newLogLevel.name}");
+
+    super.changeLogLevel(newLogLevel);
+  }
 }

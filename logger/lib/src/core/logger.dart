@@ -18,6 +18,10 @@ abstract class Logger {
         );
   }
 
+  static void changeLogLevel(LogLevel newLogLevel) {
+    _loggers.map((logger) => logger.changeLogLevel(newLogLevel));
+  }
+
   static void logDebug(
     String message, {
     List<Object?> args = const [],

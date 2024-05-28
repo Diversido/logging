@@ -19,4 +19,6 @@ abstract class ILogger {
     StackTrace? stackTrace,
   }) async =>
       '[${level.name}] $message';
+
+  void changeLogLevel(LogLevel newLogLevel) => minLogLevel = newLogLevel;
 }
