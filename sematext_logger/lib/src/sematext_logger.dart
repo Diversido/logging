@@ -16,6 +16,15 @@ class SematextLogger extends EnrichableLogger {
   final LogLevel _defaultLogLevel = LogLevel.info;
   late final LogLevel _currentLogLevel;
 
+  static late final SharedPreferences? _prefs;
+  static Future<SharedPreferences> get _sharedPrefs async {
+    if (_prefs == null) {
+      _prefs = await SharedPreferences.getInstance();
+    }
+
+    return _prefs!;
+  }
+
   SematextLogger._({
     required String sematextKey,
     required LogLevel? logLevel,
@@ -41,9 +50,7 @@ class SematextLogger extends EnrichableLogger {
     required String sematextKey,
     List<Enricher>? enrichers,
   }) async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-
-    final cachedLogLevelString = sharedPrefs.getString(cachedLogLevelKey);
+    final cachedLogLevelString = (await _sharedPrefs).getString(cachedLogLevelKey);
     final cachedLogLevel = LogLevel.values.firstWhereOrNull(
       (l) => l.name == cachedLogLevelString,
     );
@@ -140,8 +147,7 @@ class SematextLogger extends EnrichableLogger {
     final previousLogLevel = _currentLogLevel;
 
     if (previousLogLevel != newLogLevel) {
-      final sharedPrefs = await SharedPreferences.getInstance();
-      await sharedPrefs.setString(cachedLogLevelKey, newLogLevel.name);
+      await (await _sharedPrefs).setString(cachedLogLevelKey, newLogLevel.name);
 
       _currentLogLevel = newLogLevel;
       minLogLevel = _currentLogLevel;
