@@ -13,23 +13,38 @@ class ConsoleLogger extends ILogger {
   ConsoleLogger({this.printException = true});
 
   @override
-  Future<void> log(
+  void log(
     LogLevel level,
     String message, [
     Object? error,
     StackTrace? stackTrace,
     List<Object?>? args,
   ]) async {
+    _logAsync(
+      level,
+      message,
+      error,
+      stackTrace,
+      args,
+    );
+  }
+
+  Future<void> _logAsync(
+    LogLevel level,
+    String message, [
+    Object? error,
+    StackTrace? stackTrace,
+    List<Object?>? args,
+  ]) async {
+    final formattedMessage = await formatMessage(
+      level,
+      message,
+      args: args,
+    );
     // Zone.root.print is used to avoid Stack Overflow exception that happens due to the fact
     // we wrap our app with Zone and redirect all the prints into our Logger
     // as soon as it's removed, we can replace `Zone.root.print` with a simple `print`
-    Zone.root.print(
-      formatMessage(
-        level,
-        message,
-        args: args,
-      ),
-    );
+    Zone.root.print(formattedMessage);
 
     if (printException) {
       if (error != null) {
@@ -42,25 +57,32 @@ class ConsoleLogger extends ILogger {
   }
 
   @override
-  String formatMessage(
+  Future<String> formatMessage(
     LogLevel level,
     String message, {
     List<Object?>? args,
     Object? error,
     StackTrace? stackTrace,
     Map<String, String>? enrichersData,
-  }) {
+  }) async {
     final logFormatter = LogFormatter();
 
-    var formattedMassege = super.formatMessage(level, message);
+    var formattedMessage = await super.formatMessage(level, message);
 
     if (args != null) {
-      formattedMassege = logFormatter.applyArgsToLogTemplate(
-        formattedMassege,
+      formattedMessage = logFormatter.applyArgsToLogTemplate(
+        formattedMessage,
         args,
       );
     }
 
-    return formattedMassege;
+    return formattedMessage;
+  }
+
+  @override
+  void changeLogLevel(LogLevel newLogLevel) {
+    log(LogLevel.debug, "Changing log level to ${newLogLevel.name}");
+
+    super.changeLogLevel(newLogLevel);
   }
 }

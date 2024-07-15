@@ -18,6 +18,10 @@ abstract class Logger {
         );
   }
 
+  static void changeLogLevel(LogLevel newLogLevel) {
+    _loggers.map((logger) => logger.changeLogLevel(newLogLevel));
+  }
+
   static void logDebug(
     String message, {
     List<Object?> args = const [],
@@ -63,13 +67,13 @@ abstract class Logger {
     );
   }
 
-  static Future<void> logError(
+  static void logError(
     String message, {
     List<Object?> args = const [],
     Object? error,
     StackTrace? stackTrace,
-  }) async {
-    return _log(
+  }) {
+    _log(
       level: LogLevel.error,
       message: message,
       args: args,
@@ -78,18 +82,18 @@ abstract class Logger {
     );
   }
 
-  static Future<void> _log({
+  static void _log({
     required LogLevel level,
     required String message,
     Object? error,
     StackTrace? stackTrace,
     List<Object?>? args,
-  }) async {
+  }) {
     final loggers = _loggers.where(
       (logger) => level.equalOrGreater(logger.minLogLevel),
     );
 
-    final loggingFutures = loggers.map(
+    loggers.map(
       (logger) => logger.log(
         level,
         message,
@@ -98,7 +102,5 @@ abstract class Logger {
         args,
       ),
     );
-
-    await Future.wait(loggingFutures);
   }
 }
