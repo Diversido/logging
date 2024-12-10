@@ -13,10 +13,10 @@ class SematextLogger extends EnrichableLogger {
 
   late final Logsene _logsene;
 
-  final LogLevel _defaultLogLevel = LogLevel.info;
-  late final LogLevel _currentLogLevel;
+  static const LogLevel _defaultLogLevel = LogLevel.info;
+  late LogLevel _currentLogLevel;
 
-  static late final SharedPreferences? _prefs;
+  static SharedPreferences? _prefs;
   static Future<SharedPreferences> get _sharedPrefs async {
     if (_prefs == null) {
       _prefs = await SharedPreferences.getInstance();

@@ -10,7 +10,7 @@ class LogseneClient {
 
   Future<bool> send(Bulk bulk) async {
     try {
-      final url = Uri.https('https://logsene-receiver.sematext.com/_bulk');
+      final url = Uri.parse('https://logsene-receiver.sematext.com/_bulk');
       final response = await http.post(
         url,
         body: bulk.toBody(_appToken),
