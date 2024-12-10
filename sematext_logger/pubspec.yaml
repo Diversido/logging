@@ -15,7 +15,7 @@ dependencies:
   collection: ^1.17.2
   shared_preferences: ^2.2.3
   
-  logger:
+  dixo_logger:
     path: '../logger'
 
 dev_dependencies:
