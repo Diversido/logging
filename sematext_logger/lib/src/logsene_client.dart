@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:sematext_logger/src/bulk.dart';
+import 'package:dixo_sematext_logger/src/bulk.dart';
 
 class LogseneClient {
   final String _appToken;

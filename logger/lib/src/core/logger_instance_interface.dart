@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart';
+import 'package:dixo_logger/logger.dart';
 
 abstract class ILogger {
   LogLevel minLogLevel = LogLevel.debug;

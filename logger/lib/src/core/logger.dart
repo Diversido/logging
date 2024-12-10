@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart';
+import 'package:dixo_logger/logger.dart';
 
 abstract class Logger {
   static final _loggers = <ILogger>[];

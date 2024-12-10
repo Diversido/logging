@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:hive/hive.dart';
-import 'package:logger/logger.dart';
-import 'package:sematext_logger/src/logsene.dart';
-import 'package:sematext_logger/src/logsene_client.dart';
-import 'package:sematext_logger/src/utils/sematext_log_formatter.dart';
+import 'package:dixo_logger/logger.dart';
+import 'package:dixo_sematext_logger/src/logsene.dart';
+import 'package:dixo_sematext_logger/src/logsene_client.dart';
+import 'package:dixo_sematext_logger/src/utils/sematext_log_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SematextLogger extends EnrichableLogger {
@@ -50,7 +50,8 @@ class SematextLogger extends EnrichableLogger {
     required String sematextKey,
     List<Enricher>? enrichers,
   }) async {
-    final cachedLogLevelString = (await _sharedPrefs).getString(cachedLogLevelKey);
+    final cachedLogLevelString =
+        (await _sharedPrefs).getString(cachedLogLevelKey);
     final cachedLogLevel = LogLevel.values.firstWhereOrNull(
       (l) => l.name == cachedLogLevelString,
     );

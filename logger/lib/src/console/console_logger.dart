@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:logger/src/core/log_level.dart';
-import 'package:logger/src/core/logger_instance_interface.dart';
-import 'package:logger/src/utils/log_formatter.dart';
+import 'package:dixo_logger/src/core/log_level.dart';
+import 'package:dixo_logger/src/core/logger_instance_interface.dart';
+import 'package:dixo_logger/src/utils/log_formatter.dart';
 
 class ConsoleLogger extends ILogger {
   final bool printException;
