@@ -1,4 +1,4 @@
-name: sematext_logger
+name: dixo_sematext_logger
 description: A Flutter package that provides Sematext logging implementation.
 version: 0.0.1
 publish_to: none
@@ -15,7 +15,7 @@ dependencies:
   collection: ^1.17.2
   shared_preferences: ^2.2.3
   
-  logger:
+  dixo_logger:
     path: '../logger'
 
 dev_dependencies:

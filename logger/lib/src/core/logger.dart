@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart';
+import 'package:dixo_logger/logger.dart';
 
 abstract class Logger {
   static final _loggers = <ILogger>[];
@@ -93,14 +93,14 @@ abstract class Logger {
       (logger) => level.equalOrGreater(logger.minLogLevel),
     );
 
-    loggers.map(
-      (logger) => logger.log(
+    for (final logger in loggers) {
+      logger.log(
         level,
         message,
         error,
         stackTrace,
         args,
-      ),
-    );
+      );
+    }
   }
 }

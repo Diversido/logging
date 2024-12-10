@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart';
+import 'package:dixo_logger/logger.dart';
 
 abstract class EnrichableLogger extends ILogger {
   final _enrichers = <Enricher>[];

@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:logger/logger.dart';
+import 'package:dixo_logger/logger.dart';
 
 class SematextLogFormatter extends LogFormatter {
   /// If 'formatted' is true, then result list contains [name1, name2, ...]

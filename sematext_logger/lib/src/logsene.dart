@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:hive/hive.dart';
-import 'package:sematext_logger/src/bulk.dart';
-import 'package:sematext_logger/src/log_record.dart';
-import 'package:sematext_logger/src/logsene_client.dart';
+import 'package:dixo_sematext_logger/src/bulk.dart';
+import 'package:dixo_sematext_logger/src/log_record.dart';
+import 'package:dixo_sematext_logger/src/logsene_client.dart';
 
 class Logsene {
   static const _boxName = 'logs';
